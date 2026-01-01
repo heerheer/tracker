@@ -138,6 +138,7 @@ const WebDAVSettings: React.FC<WebDAVSettingsProps> = ({ habits, onRefresh }) =>
             <div className="flex items-center gap-3 border-b border-border pb-4">
                 <div className="text-xl">☁️</div>
                 <h2 className="text-lg font-serif text-foreground">{t('webdav.title')}</h2>
+                <div className="flex-1"></div>
                 <Switch checked={showDetails} onCheckedChange={setShowDetails} />
             </div>
 
