@@ -5,6 +5,7 @@ export interface WebDAVConfig {
     password: string;
     useProxy?: boolean;
     proxyUrl?: string;
+    maxBackups?: number;
 }
 
 const getAuthHeader = (config: WebDAVConfig) => {
@@ -111,4 +112,18 @@ export const restoreFromWebDAV = async (config: WebDAVConfig, filename: string) 
     }
 
     return response.json();
+};
+
+export const deleteBackup = async (config: WebDAVConfig, filename: string) => {
+    const baseUrl = config.url.replace(/\/$/, '');
+    const targetUrl = `${baseUrl}/tracker/${filename}`;
+    const url = getWrappedUrl(config, targetUrl);
+
+    const response = await fetch(url, {
+        ...getFetchOptions(config, 'DELETE'),
+    });
+
+    if (!response.ok) {
+        throw new Error(`Delete failed: ${response.statusText}`);
+    }
 };

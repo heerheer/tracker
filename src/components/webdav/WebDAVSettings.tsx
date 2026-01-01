@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Habit } from '../../types';
-import { backupToWebDAV, restoreFromWebDAV, listBackups, WebDAVConfig } from '../../utils/webdav';
+import { backupToWebDAV, restoreFromWebDAV, listBackups, deleteBackup, WebDAVConfig } from '../../utils/webdav';
 import { saveAllHabits, clearAllDB } from '../../db';
 import WebDAVRestoreModal from './WebDAVRestoreModal';
 
@@ -16,6 +16,7 @@ const WebDAVSettings: React.FC<WebDAVSettingsProps> = ({ habits, onRefresh }) =>
         url: '',
         username: '',
         password: '',
+        maxBackups: 15,
     });
     const [status, setStatus] = useState<{ type: 'success' | 'error' | 'loading' | null; message: string }>({
         type: null,
@@ -50,9 +51,25 @@ const WebDAVSettings: React.FC<WebDAVSettingsProps> = ({ habits, onRefresh }) =>
         setStatus({ type: 'loading', message: 'Backing up...' });
         try {
             await backupToWebDAV(config, habits);
+            await cleanupBackups();
             setStatus({ type: 'success', message: 'Backup successful!' });
         } catch (error: any) {
             setStatus({ type: 'error', message: error.message || 'Backup failed.' });
+        }
+    };
+
+    const cleanupBackups = async () => {
+        try {
+            const list = await listBackups(config);
+            const max = config.maxBackups || 15;
+            if (list.length > max) {
+                const toDelete = list.slice(max);
+                for (const filename of toDelete) {
+                    await deleteBackup(config, filename);
+                }
+            }
+        } catch (e) {
+            console.error('Cleanup failed', e);
         }
     };
 
@@ -90,6 +107,19 @@ const WebDAVSettings: React.FC<WebDAVSettingsProps> = ({ habits, onRefresh }) =>
             setStatus({ type: 'success', message: 'Restore successful!' });
         } catch (error: any) {
             setStatus({ type: 'error', message: error.message || 'Restore failed.' });
+        }
+    };
+
+    const executeDelete = async (filename: string) => {
+        try {
+            await deleteBackup(config, filename);
+            const newList = backups.filter(b => b !== filename);
+            setBackups(newList);
+            if (newList.length === 0) {
+                setShowRestoreModal(false);
+            }
+        } catch (error: any) {
+            alert(`Delete failed: ${error.message}`);
         }
     };
 
@@ -165,6 +195,21 @@ const WebDAVSettings: React.FC<WebDAVSettingsProps> = ({ habits, onRefresh }) =>
                             </p>
                         </div>
                     )}
+
+                    <div className="pt-2 flex items-center justify-between">
+                        <div className="space-y-1">
+                            <h3 className="text-sm font-serif text-[#413A2C]">Max Backups</h3>
+                            <p className="text-[10px] text-[#726C62]">Automatically delete oldest backups.</p>
+                        </div>
+                        <input
+                            type="number"
+                            name="maxBackups"
+                            value={config.maxBackups ?? 15}
+                            onChange={(e) => handleSaveConfig(e.target.name, parseInt(e.target.value) || 1)}
+                            min="1"
+                            className="w-16 bg-[#E9E8E2]/30 border border-[#DBDCD7] rounded-xl px-2 py-1.5 text-xs text-center focus:outline-none focus:ring-1 focus:ring-[#66AB71] transition-all"
+                        />
+                    </div>
                 </div>
             </div>
 
@@ -202,6 +247,7 @@ const WebDAVSettings: React.FC<WebDAVSettingsProps> = ({ habits, onRefresh }) =>
                 onClose={() => setShowRestoreModal(false)}
                 backups={backups}
                 onRestore={executeRestore}
+                onDelete={executeDelete}
             />
         </div>
     );
