@@ -12,6 +12,16 @@ Waiting for the settling, the lingering, and the fading, until it is a regret no
 > ———— 《当我们点起火把》
 </div>
 
+## UI
+
+**Build with Gemini-3-Flash and Antigravity.**
+
+<div style="display:flex; gap:12px;">
+  <img src="imgs/home.png" width="22%" />
+  <img src="imgs/record_modal.png" width="22%" />
+  <img src="imgs/setting_with_webdav.png" width="22%" />
+  <img src="imgs/widgets_example.png" width="22%" />
+</div>
 
 ## Features
 
@@ -28,15 +38,18 @@ Waiting for the settling, the lingering, and the fading, until it is a regret no
 - **Progress Tracking**: Visualize your consistency with heatmaps and detailed check-in history. (You could enable these widgets in the settings.)
 
 
-## WebDAV Backup
+### WebDAV Backup
 
 Securely sync your journey data using your own WebDAV server (e.g., Nutstore, Nextcloud, Cloudreve).
+
+You can use your own CORS-Proxy to bypass browser restrictions when connecting to certain WebDAV providers, or you can choose mine, which url is `https://cors-proxy.heerheer.deno.net/?url=`
 
 - **Cloud Synchronization**: Backup your local data to the `/afterglow` directory on your WebDAV server with one click.
 - **Snapshot Management**: View a list of historical backups and restore from any specific snapshot.
 - **Auto-Cleanup**: Set a maximum number of backups to automatically manage storage and remove older versions.
 - **CORS Proxy Support**: Built-in support for CORS proxies to bypass browser restrictions when connecting to certain WebDAV providers.
-- **Quick Backup**: Accessible quick backup button in the navigation for instant data protection.
+- **Quick Backup**: Accessible quick backup button in the navigation for instant data protection.(WIP)
+
 
 ### Share
 WIP
