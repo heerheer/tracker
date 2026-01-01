@@ -9,11 +9,17 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@tailwindcss/vite": "^4.1.18",
+    "@capacitor/android": "^7.0.0",
+    "@capacitor/core": "^7.0.0",
+    "framer-motion": "11.11.17",
+    "idb": "^8.0.3",
     "react": "19.0.0",
     "react-dom": "19.0.0",
-    "framer-motion": "11.11.17"
+    "tailwindcss": "^4.1.18"
   },
   "devDependencies": {
+    "@capacitor/cli": "^7.0.0",
     "@types/node": "^22.14.0",
     "@vitejs/plugin-react": "^5.0.0",
     "typescript": "~5.8.2",

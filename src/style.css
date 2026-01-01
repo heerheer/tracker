@@ -1,0 +1,29 @@
+@import "tailwindcss";
+
+body {
+    background-color: #E9E8E2;
+    color: #413A2C;
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+}
+
+.font-serif {
+    font-family: 'Playfair Display', 'Noto Serif SC', serif;
+}
+
+.paper-shadow {
+    box-shadow: 0 4px 20px -2px rgba(65, 58, 44, 0.05);
+}
+
+/* Hide scrollbars globally but keep functionality */
+* {
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+    /* IE and Edge */
+}
+
+*::-webkit-scrollbar {
+    display: none;
+    /* Chrome, Safari and Opera */
+}

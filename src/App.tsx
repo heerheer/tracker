@@ -1,11 +1,12 @@
 
 import React, { useState, useEffect } from 'react';
-import { Habit, TabType, HabitLog } from './types';
+import { Habit, TabType } from './types';
 import Home from './pages/Home';
 import Records from './pages/Records';
 import Settings from './pages/Settings';
 import Dock from './components/Dock';
 import { AnimatePresence, motion } from 'framer-motion';
+import { getAllHabits, saveAllHabits, deleteHabitFromDB } from './db';
 
 const STORAGE_KEY = 'ethereal_habits_v1_moods';
 
@@ -33,15 +34,47 @@ const INITIAL_HABITS: Habit[] = [
 ];
 
 const App: React.FC = () => {
-  const [habits, setHabits] = useState<Habit[]>(() => {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    return saved ? JSON.parse(saved) : INITIAL_HABITS;
-  });
+  const [habits, setHabits] = useState<Habit[]>([]);
+  const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<TabType>('home');
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(habits));
-  }, [habits]);
+    const loadData = async () => {
+      try {
+        const storedHabits = await getAllHabits();
+
+        if (storedHabits.length > 0) {
+          setHabits(storedHabits);
+        } else {
+          // Check for legacy localStorage data
+          const legacyData = localStorage.getItem(STORAGE_KEY);
+          if (legacyData) {
+            const parsed = JSON.parse(legacyData);
+            setHabits(parsed);
+            await saveAllHabits(parsed);
+            // Optionally clear localStorage after migration
+            // localStorage.removeItem(STORAGE_KEY);
+          } else {
+            setHabits(INITIAL_HABITS);
+            await saveAllHabits(INITIAL_HABITS);
+          }
+        }
+      } catch (error) {
+        console.error('Failed to load habits from IndexedDB:', error);
+        setHabits(INITIAL_HABITS);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadData();
+  }, []);
+
+  useEffect(() => {
+    if (!loading) {
+      saveAllHabits(habits).catch(err => console.error('Failed to save habits:', err));
+    }
+  }, [habits, loading]);
 
   const addHabit = (habit: Omit<Habit, 'id' | 'createdAt' | 'logs'>) => {
     const newHabit: Habit = {
@@ -59,6 +92,7 @@ const App: React.FC = () => {
 
   const deleteHabit = (id: string) => {
     setHabits(prev => prev.filter(h => h.id !== id));
+    deleteHabitFromDB(id).catch(err => console.error('Failed to delete habit from db:', err));
   };
 
   const toggleCheckIn = (id: string, dateStr: string, mood?: string) => {
@@ -66,9 +100,8 @@ const App: React.FC = () => {
       if (h.id === id) {
         const existingLogIndex = h.logs.findIndex(l => l.date === dateStr);
         let newLogs = [...h.logs];
-        
+
         if (existingLogIndex > -1) {
-          // If already exists and we are just toggling off (only if no mood provided/editing)
           if (mood === undefined) {
             newLogs.splice(existingLogIndex, 1);
           } else {
@@ -77,7 +110,7 @@ const App: React.FC = () => {
         } else {
           newLogs.push({ date: dateStr, mood: mood || '' });
         }
-        
+
         return { ...h, logs: newLogs };
       }
       return h;
@@ -104,6 +137,15 @@ const App: React.FC = () => {
   };
 
   const renderContent = () => {
+    if (loading) {
+      return (
+        <div className="flex flex-col items-center justify-center h-full space-y-4 pt-20">
+          <div className="w-10 h-10 border-4 border-[#A3BB96] border-t-transparent rounded-full animate-spin" />
+          <p className="text-[#A3BB96] font-medium animate-pulse text-sm tracking-widest uppercase">Initializing Tracker</p>
+        </div>
+      );
+    }
+
     return (
       <AnimatePresence mode="wait">
         <motion.div
@@ -115,16 +157,16 @@ const App: React.FC = () => {
           className="w-full"
         >
           {activeTab === 'home' && (
-            <Home 
-              habits={habits} 
-              onCheckIn={(id, mood) => toggleCheckIn(id, new Date().toISOString().split('T')[0], mood)} 
+            <Home
+              habits={habits}
+              onCheckIn={(id, mood) => toggleCheckIn(id, new Date().toISOString().split('T')[0], mood)}
             />
           )}
           {activeTab === 'records' && (
-            <Records 
-              habits={habits} 
-              onDelete={deleteHabit} 
-              onSetMain={setAsMain} 
+            <Records
+              habits={habits}
+              onDelete={deleteHabit}
+              onSetMain={setAsMain}
               onAdd={addHabit}
               onToggleLog={toggleCheckIn}
               onUpdateMood={updateMood}
@@ -137,8 +179,8 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col pb-32">
-      <main className="flex-1 max-w-md mx-auto w-full px-6 pt-12 overflow-x-hidden">
+    <div className="min-h-screen flex flex-col pb-32 pt-12">
+      <main className="flex-1 max-w-md mx-auto w-full px-6  overflow-x-hidden">
         {renderContent()}
       </main>
       <Dock activeTab={activeTab} setActiveTab={setActiveTab} />
@@ -147,3 +189,4 @@ const App: React.FC = () => {
 };
 
 export default App;
+
