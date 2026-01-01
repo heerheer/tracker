@@ -9,6 +9,7 @@ export default defineConfig(() => {
       port: 3000,
       host: '0.0.0.0',
     },
+    publicDir: 'public',
     plugins: [react(), tailwindcss()],
     define: {
       'import.meta.env.VITE_APP_VERSION': JSON.stringify(process.env.VITE_APP_VERSION || '0.0.0'),
