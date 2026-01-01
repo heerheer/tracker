@@ -13,7 +13,7 @@ interface HomeProps {
   onCheckIn: (id: string, mood?: string) => void;
 }
 
-const WIDGET_STORAGE_KEY = 'tracker_widget_config';
+const WIDGET_STORAGE_KEY = 'afterglow_widget_config';
 
 const Home = ({ habits, onCheckIn }: HomeProps) => {
   const { t, i18n } = useTranslation();

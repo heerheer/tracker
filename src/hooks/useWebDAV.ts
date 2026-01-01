@@ -4,7 +4,7 @@ import { backupToWebDAV, restoreFromWebDAV, listBackups, deleteBackup, WebDAVCon
 import { saveAllHabits, clearAllDB } from '../db';
 import { useTranslation } from 'react-i18next';
 
-export const WEBDAV_STORAGE_KEY = 'tracker_webdav_config';
+export const WEBDAV_STORAGE_KEY = 'afterglow_webdav_config';
 
 export interface WebDAVStatus {
     type: 'success' | 'error' | 'loading' | null;

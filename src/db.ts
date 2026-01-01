@@ -1,7 +1,7 @@
 import { openDB, IDBPDatabase } from 'idb';
 import { Habit } from './types';
 
-const DB_NAME = 'TrackerDB';
+const DB_NAME = 'AfterglowDB';
 const DB_VERSION = 1;
 const STORE_NAME = 'habits';
 

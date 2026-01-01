@@ -11,7 +11,7 @@ interface SettingsProps {
   onRefresh: () => Promise<void>;
 }
 
-const WIDGET_STORAGE_KEY = 'tracker_widget_config';
+const WIDGET_STORAGE_KEY = 'afterglow_widget_config';
 
 const DEFAULT_WIDGET_CONFIG: WidgetConfig = {
   heatmap: false,
@@ -154,7 +154,7 @@ const Settings: React.FC<SettingsProps> = ({ habits, onRefresh }) => {
         <div className="flex gap-2">
           {['auto', 'en', 'zh'].map((lang) => {
             const isAuto = lang === 'auto';
-            const userLangPref = localStorage.getItem('tracker_user_lang');
+            const userLangPref = localStorage.getItem('afterglow_user_lang');
             const isActive = isAuto ? !userLangPref : userLangPref === lang;
 
             return (
@@ -162,10 +162,10 @@ const Settings: React.FC<SettingsProps> = ({ habits, onRefresh }) => {
                 key={lang}
                 onClick={() => {
                   if (isAuto) {
-                    localStorage.removeItem('tracker_user_lang');
+                    localStorage.removeItem('afterglow_user_lang');
                     window.location.reload();
                   } else {
-                    localStorage.setItem('tracker_user_lang', lang);
+                    localStorage.setItem('afterglow_user_lang', lang);
                     i18n.changeLanguage(lang);
                   }
                 }}
@@ -200,12 +200,12 @@ const Settings: React.FC<SettingsProps> = ({ habits, onRefresh }) => {
           <div className="flex justify-between items-center text-sm">
             <span className="text-muted-foreground font-medium uppercase tracking-widest text-[9px]">{t('settings.repository')}</span>
             <a
-              href="https://github.com/heerheer/tracker"
+              href="https://github.com/heerheer/afterglow"
               target="_blank"
               rel="noopener noreferrer"
               className="text-primary hover:underline font-medium text-xs"
             >
-              heerheer/tracker
+              heerheer/afterglow
             </a>
           </div>
         </div>

@@ -11,7 +11,7 @@ i18n
         fallbackLng: 'en',
         detection: {
             order: ['localStorage', 'navigator'],
-            lookupLocalStorage: 'tracker_user_lang',
+            lookupLocalStorage: 'afterglow_user_lang',
             caches: [],
         },
         debug: import.meta.env.MODE === 'development',

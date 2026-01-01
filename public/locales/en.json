@@ -1,6 +1,6 @@
 {
     "app": {
-        "initializing": "Initializing Tracker"
+        "initializing": "Initializing Afterglow"
     },
     "calendar": {
         "add-record": "Add Record",
@@ -79,7 +79,7 @@
     },
     "settings": {
         "app-info": "App Info",
-        "app-name": "Tracker",
+        "app-name": "Afterglow",
         "app-tagline": "Celebrating our regrets.",
         "capsule-description": "Description",
         "capsule-description-placeholder": "Brief objective (optional)",
@@ -104,7 +104,7 @@
     },
     "webdav": {
         "backing-up": "Backing up...",
-        "backup-dir-hint": "Files will be backed up to the <1>/tracker</1> directory.",
+        "backup-dir-hint": "Files will be backed up to the <1>/afterglow</1> directory.",
         "backup-failed": "Backup failed.",
         "backup-now": "Backup Now",
         "backup-started": "Backup started...",

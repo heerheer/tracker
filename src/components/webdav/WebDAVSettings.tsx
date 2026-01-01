@@ -174,7 +174,7 @@ const WebDAVSettings: React.FC<WebDAVSettingsProps> = ({ habits, onRefresh }) =>
 
             <p className="text-[10px] text-muted-foreground text-center italic">
                 <Trans i18nKey="webdav.backup-dir-hint">
-                    Files will be backed up to the <code className="bg-secondary px-1 rounded">/tracker</code> directory.
+                    Files will be backed up to the <code className="bg-secondary px-1 rounded">/afterglow</code> directory.
                 </Trans>
             </p>
 

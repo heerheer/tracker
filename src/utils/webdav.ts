@@ -40,7 +40,7 @@ const getWrappedUrl = (config: WebDAVConfig, targetUrl: string) => {
 
 const ensureDirectory = async (config: WebDAVConfig) => {
     const baseUrl = config.url.replace(/\/$/, '');
-    const targetUrl = `${baseUrl}/tracker/`;
+    const targetUrl = `${baseUrl}/afterglow/`;
     const url = getWrappedUrl(config, targetUrl);
 
     const response = await fetch(url, {
@@ -58,7 +58,7 @@ export const backupToWebDAV = async (config: WebDAVConfig, data: any) => {
     const filename = `backup_${timestamp}.json`;
 
     const baseUrl = config.url.replace(/\/$/, '');
-    const targetUrl = `${baseUrl}/tracker/${filename}`;
+    const targetUrl = `${baseUrl}/afterglow/${filename}`;
     const url = getWrappedUrl(config, targetUrl);
 
     const response = await fetch(url, {
@@ -70,7 +70,7 @@ export const backupToWebDAV = async (config: WebDAVConfig, data: any) => {
 
 export const listBackups = async (config: WebDAVConfig): Promise<string[]> => {
     const baseUrl = config.url.replace(/\/$/, '');
-    const targetUrl = `${baseUrl}/tracker/`;
+    const targetUrl = `${baseUrl}/afterglow/`;
     const url = getWrappedUrl(config, targetUrl);
 
     const response = await fetch(url, {
@@ -99,7 +99,7 @@ export const listBackups = async (config: WebDAVConfig): Promise<string[]> => {
 
 export const restoreFromWebDAV = async (config: WebDAVConfig, filename: string) => {
     const baseUrl = config.url.replace(/\/$/, '');
-    const targetUrl = `${baseUrl}/tracker/${filename}`;
+    const targetUrl = `${baseUrl}/afterglow/${filename}`;
     const url = getWrappedUrl(config, targetUrl);
 
     const response = await fetch(url, {
@@ -116,7 +116,7 @@ export const restoreFromWebDAV = async (config: WebDAVConfig, filename: string) 
 
 export const deleteBackup = async (config: WebDAVConfig, filename: string) => {
     const baseUrl = config.url.replace(/\/$/, '');
-    const targetUrl = `${baseUrl}/tracker/${filename}`;
+    const targetUrl = `${baseUrl}/afterglow/${filename}`;
     const url = getWrappedUrl(config, targetUrl);
 
     const response = await fetch(url, {

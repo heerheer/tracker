@@ -1,20 +1,53 @@
 <div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+<img width="100" height="100" alt="GHBanner" src="public/logo.svg" />
+
+English | [简体中文](README_zh.md)
+
+### Afterglow
+
+Waiting for the settling, the lingering, and the fading, until it is a regret no more.
+
+> 这首歌关于一个庆祝，庆祝什么呢，庆祝我们的遗憾，此时此刻我们是被我们过往所有的经历堆叠而成的，包括艰难的时刻，所以让我们点起火把。
+>
+> ———— 《当我们点起火把》
 </div>
 
-# Run and deploy your AI Studio app
 
-This contains everything you need to run your app locally.
+## Features
 
-View your app in AI Studio: https://ai.studio/apps/drive/13BuzAEpS_gtqUYC_G2gdSSWORrSgW8bn
+### Record
 
-## Run Locally
+#### 1. Check-in
+- **Daily Reflection**: Capture your mood and thoughts with a brief note.
+- **Visual Feedback**: Stay motivated with day streaks and completion indicators.
+- **Main Focus**: Highlight your primary journey for the day to stay aligned with your long-term goals.
 
-**Prerequisites:**  Node.js
+#### 2. Journey Management
+- **Custom Habits**: Create and track multiple "Journeys"(records) with personalized icons and descriptions.
+- **Swipe Actions**: Intuitively manage your records—swipe right to set a main goal, swipe left to delete.
+- **Progress Tracking**: Visualize your consistency with heatmaps and detailed check-in history. (You could enable these widgets in the settings.)
 
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+## WebDAV Backup
+
+Securely sync your journey data using your own WebDAV server (e.g., Nutstore, Nextcloud, Cloudreve).
+
+- **Cloud Synchronization**: Backup your local data to the `/afterglow` directory on your WebDAV server with one click.
+- **Snapshot Management**: View a list of historical backups and restore from any specific snapshot.
+- **Auto-Cleanup**: Set a maximum number of backups to automatically manage storage and remove older versions.
+- **CORS Proxy Support**: Built-in support for CORS proxies to bypass browser restrictions when connecting to certain WebDAV providers.
+- **Quick Backup**: Accessible quick backup button in the navigation for instant data protection.
+
+### Share
+WIP
+### Supervision
+WIP
+## Roadmap
+
+- [x] Record!
+- [ ] Share!
+- [ ] Supervision!
+
+## Contributing
+WIP
+

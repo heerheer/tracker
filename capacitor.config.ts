@@ -1,8 +1,8 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-    appId: 'top.realme.tracker',
-    appName: 'Ethereal Habit Tracker',
+    appId: 'top.realme.afterglow',
+    appName: 'Afterglow',
     webDir: 'dist',
     server: {
         androidScheme: 'https'

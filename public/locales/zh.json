@@ -79,7 +79,7 @@
     },
     "settings": {
         "app-info": "应用信息",
-        "app-name": "Tracker",
+        "app-name": "余火",
         "app-tagline": "庆祝我们的遗憾。",
         "capsule-description": "描述",
         "capsule-description-placeholder": "简短的目标（可选）",
@@ -104,7 +104,7 @@
     },
     "webdav": {
         "backing-up": "备份中...",
-        "backup-dir-hint": "文件将备份到服务器的 <1>/tracker</1> 目录。",
+        "backup-dir-hint": "文件将备份到服务器的 <1>/afterglow</1> 目录。",
         "backup-failed": "备份失败。",
         "backup-now": "立即备份",
         "backup-started": "开始备份...",
