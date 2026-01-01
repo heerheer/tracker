@@ -50,10 +50,10 @@
         "update-manifestation": "Update your manifestation target."
     },
     "nav": {
+        "backup": "Quick Cloud Backup",
         "home": "Home",
         "records": "Records",
-        "settings": "Settings",
-        "backup": "Quick Cloud Backup"
+        "settings": "Settings"
     },
     "records": {
         "cancel": "Cancel",
@@ -74,8 +74,8 @@
     },
     "settings": {
         "app-info": "App Info",
-        "app-name": "Ethereal Habits",
-        "app-tagline": "Mindful consistency on paper.",
+        "app-name": "Tracker",
+        "app-tagline": "Celebrating our regrets.",
         "capsule-description": "Description",
         "capsule-description-placeholder": "Brief objective (optional)",
         "capsule-target-date": "Target Date",
@@ -102,7 +102,10 @@
         "backup-dir-hint": "Files will be backed up to the <1>/tracker</1> directory.",
         "backup-failed": "Backup failed.",
         "backup-now": "Backup Now",
+        "backup-started": "Backup started...",
         "backup-success": "Backup successful!",
+        "confirm-backup-msg": "Are you sure you want to backup your data to the cloud now?",
+        "confirm-backup-title": "Quick Backup",
         "delete": "Delete",
         "delete-backup-confirm": "Delete backup \"{{filename}}\"?",
         "delete-failed": "Delete failed: {{message}}",
@@ -127,10 +130,7 @@
         "server-url": "Server URL",
         "title": "WebDAV Backup",
         "use-cors-proxy": "Use CORS Proxy",
-        "username": "Username",
-        "confirm-backup-title": "Quick Backup",
-        "confirm-backup-msg": "Are you sure you want to backup your data to the cloud now?",
-        "backup-started": "Backup started..."
+        "username": "Username"
     },
     "widgets": {
         "days": "Days",

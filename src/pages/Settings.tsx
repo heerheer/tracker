@@ -4,6 +4,7 @@ import { Habit, WidgetConfig } from '../types';
 import WebDAVSettings from '../components/webdav/WebDAVSettings';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
+import { FlameTorchIcon } from '@/components/FlameTorchIcon';
 
 interface SettingsProps {
   habits: Habit[];
@@ -182,8 +183,8 @@ const Settings: React.FC<SettingsProps> = ({ habits, onRefresh }) => {
 
       <div className="bg-card border border-border rounded-[28px] p-8 paper-shadow space-y-8">
         <div className="space-y-4 text-center py-4">
-          <div className="w-16 h-16 bg-secondary rounded-[24px] mx-auto flex items-center justify-center text-3xl paper-shadow border border-white">
-            📜
+          <div className="w-16 h-16 bg-secondary rounded-[24px] mx-auto flex items-center justify-center paper-shadow border border-white">
+            <FlameTorchIcon className="text-primary w-12 h-12" />
           </div>
           <div>
             <h2 className="text-lg font-serif text-foreground">{t('settings.app-name')}</h2>
