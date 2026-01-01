@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface FutureCapsuleProps {
     title: string;
@@ -8,6 +9,7 @@ interface FutureCapsuleProps {
 }
 
 const FutureCapsule: React.FC<FutureCapsuleProps> = ({ title, description, targetDate, onEdit }) => {
+    const { t } = useTranslation();
     const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0 });
 
     useEffect(() => {
@@ -38,11 +40,11 @@ const FutureCapsule: React.FC<FutureCapsuleProps> = ({ title, description, targe
                 <div className="flex gap-4 items-baseline">
                     <div className="flex flex-col">
                         <span className="text-5xl font-serif">{timeLeft.days}</span>
-                        <span className="text-[10px] uppercase tracking-tighter opacity-70">Days</span>
+                        <span className="text-[10px] uppercase tracking-tighter opacity-70">{t('widgets.days')}</span>
                     </div>
                     <div className="flex flex-col">
                         <span className="text-3xl font-serif">{timeLeft.hours}</span>
-                        <span className="text-[10px] uppercase tracking-tighter opacity-70">Hours</span>
+                        <span className="text-[10px] uppercase tracking-tighter opacity-70">{t('widgets.hours')}</span>
                     </div>
                 </div>
             </div>

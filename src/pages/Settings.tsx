@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Habit, WidgetConfig } from '../types';
 import WebDAVSettings from '../components/webdav/WebDAVSettings';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 
 interface SettingsProps {
   habits: Habit[];
@@ -23,6 +24,7 @@ const DEFAULT_WIDGET_CONFIG: WidgetConfig = {
 };
 
 const Settings: React.FC<SettingsProps> = ({ habits, onRefresh }) => {
+  const { t, i18n } = useTranslation();
   const [widgetConfig, setWidgetConfig] = useState<WidgetConfig>(DEFAULT_WIDGET_CONFIG);
 
   useEffect(() => {
@@ -43,21 +45,21 @@ const Settings: React.FC<SettingsProps> = ({ habits, onRefresh }) => {
 
   return (
     <div className="space-y-8 animate-in fade-in duration-500 pb-8">
-      <h1 className="text-3xl font-serif italic text-[#413A2C]">Settings</h1>
+      <h1 className="text-3xl font-serif italic text-[#413A2C]">{t('settings.title')}</h1>
 
       <WebDAVSettings habits={habits} onRefresh={onRefresh} />
 
       <div className="bg-[#FCFBFC] border border-[#DBDCD7] rounded-[28px] p-8 paper-shadow space-y-6">
         <div className="flex items-center gap-3 border-b border-[#DBDCD7] pb-4">
           <div className="text-xl">🧩</div>
-          <h2 className="text-lg font-serif text-[#413A2C]">Widgets</h2>
+          <h2 className="text-lg font-serif text-[#413A2C]">{t('settings.widgets')}</h2>
         </div>
 
         <div className="space-y-6">
           <div className="flex items-center justify-between">
             <div className="space-y-1">
-              <h3 className="text-sm font-serif text-[#413A2C]">Heatmap</h3>
-              <p className="text-[10px] text-[#726C62]">Display 30-day activity consistency.</p>
+              <h3 className="text-sm font-serif text-[#413A2C]">{t('settings.heatmap')}</h3>
+              <p className="text-[10px] text-[#726C62]">{t('settings.heatmap-desc')}</p>
             </div>
             <button
               onClick={() => handleSaveWidgetConfig({ ...widgetConfig, heatmap: !widgetConfig.heatmap })}
@@ -69,8 +71,8 @@ const Settings: React.FC<SettingsProps> = ({ habits, onRefresh }) => {
 
           <div className="flex items-center justify-between">
             <div className="space-y-1">
-              <h3 className="text-sm font-serif text-[#413A2C]">Daily Quote</h3>
-              <p className="text-[10px] text-[#726C62]">Inspiring word from Hitokoto API.</p>
+              <h3 className="text-sm font-serif text-[#413A2C]">{t('settings.daily-quote')}</h3>
+              <p className="text-[10px] text-[#726C62]">{t('settings.daily-quote-desc')}</p>
             </div>
             <button
               onClick={() => handleSaveWidgetConfig({ ...widgetConfig, quote: !widgetConfig.quote })}
@@ -83,8 +85,8 @@ const Settings: React.FC<SettingsProps> = ({ habits, onRefresh }) => {
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <div className="space-y-1">
-                <h3 className="text-sm font-serif text-[#413A2C]">Future Capsule</h3>
-                <p className="text-[10px] text-[#726C62]">Countdown to a special moment.</p>
+                <h3 className="text-sm font-serif text-[#413A2C]">{t('settings.future-capsule')}</h3>
+                <p className="text-[10px] text-[#726C62]">{t('settings.future-capsule-desc')}</p>
               </div>
               <button
                 onClick={() => handleSaveWidgetConfig({
@@ -100,7 +102,7 @@ const Settings: React.FC<SettingsProps> = ({ habits, onRefresh }) => {
             {widgetConfig.capsule.enabled && (
               <div className="grid grid-cols-2 gap-4 animate-in slide-in-from-top-2 duration-300">
                 <div className="space-y-1">
-                  <label className="text-[10px] uppercase tracking-widest text-[#726C62] font-medium ml-1">Title</label>
+                  <label className="text-[10px] uppercase tracking-widest text-[#726C62] font-medium ml-1">{t('settings.capsule-title')}</label>
                   <input
                     type="text"
                     value={widgetConfig.capsule.title}
@@ -108,12 +110,12 @@ const Settings: React.FC<SettingsProps> = ({ habits, onRefresh }) => {
                       ...widgetConfig,
                       capsule: { ...widgetConfig.capsule, title: e.target.value }
                     })}
-                    placeholder="Event Title"
+                    placeholder={t('settings.capsule-title-placeholder')}
                     className="w-full bg-[#E9E8E2]/30 border border-[#DBDCD7] rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-[#66AB71] transition-all"
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-[10px] uppercase tracking-widest text-[#726C62] font-medium ml-1">Target Date</label>
+                  <label className="text-[10px] uppercase tracking-widest text-[#726C62] font-medium ml-1">{t('settings.capsule-target-date')}</label>
                   <input
                     type="date"
                     value={widgetConfig.capsule.targetDate}
@@ -125,7 +127,7 @@ const Settings: React.FC<SettingsProps> = ({ habits, onRefresh }) => {
                   />
                 </div>
                 <div className="col-span-2 space-y-1">
-                  <label className="text-[10px] uppercase tracking-widest text-[#726C62] font-medium ml-1">Description</label>
+                  <label className="text-[10px] uppercase tracking-widest text-[#726C62] font-medium ml-1">{t('settings.capsule-description')}</label>
                   <input
                     type="text"
                     value={widgetConfig.capsule.description}
@@ -133,7 +135,7 @@ const Settings: React.FC<SettingsProps> = ({ habits, onRefresh }) => {
                       ...widgetConfig,
                       capsule: { ...widgetConfig.capsule, description: e.target.value }
                     })}
-                    placeholder="Brief objective (optional)"
+                    placeholder={t('settings.capsule-description-placeholder')}
                     className="w-full bg-[#E9E8E2]/30 border border-[#DBDCD7] rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-[#66AB71] transition-all"
                   />
                 </div>
@@ -143,24 +145,59 @@ const Settings: React.FC<SettingsProps> = ({ habits, onRefresh }) => {
         </div>
       </div>
 
+      <div className="bg-[#FCFBFC] border border-[#DBDCD7] rounded-[28px] p-8 paper-shadow space-y-6">
+        <div className="flex items-center gap-3 border-b border-[#DBDCD7] pb-4">
+          <div className="text-xl">🌐</div>
+          <h2 className="text-lg font-serif text-[#413A2C]">{t('settings.language')}</h2>
+        </div>
+        <div className="flex gap-2">
+          {['auto', 'en', 'zh'].map((lang) => {
+            const isAuto = lang === 'auto';
+            const userLangPref = localStorage.getItem('tracker_user_lang');
+            const isActive = isAuto ? !userLangPref : userLangPref === lang;
+
+            return (
+              <button
+                key={lang}
+                onClick={() => {
+                  if (isAuto) {
+                    localStorage.removeItem('tracker_user_lang');
+                    window.location.reload();
+                  } else {
+                    localStorage.setItem('tracker_user_lang', lang);
+                    i18n.changeLanguage(lang);
+                  }
+                }}
+                className={`flex-1 py-2.5 rounded-xl text-xs font-medium transition-all ${isActive
+                  ? 'bg-[#66AB71] text-white paper-shadow'
+                  : 'bg-[#E9E8E2]/30 text-[#726C62] hover:bg-[#E9E8E2]/50'
+                  }`}
+              >
+                {t(`settings.lang-${lang}`)}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
       <div className="bg-[#FCFBFC] border border-[#DBDCD7] rounded-[28px] p-8 paper-shadow space-y-8">
         <div className="space-y-4 text-center py-4">
           <div className="w-16 h-16 bg-[#E9E8E2] rounded-[24px] mx-auto flex items-center justify-center text-3xl paper-shadow border border-white">
             📜
           </div>
           <div>
-            <h2 className="text-lg font-serif text-[#413A2C]">Ethereal Habits</h2>
-            <p className="text-[#726C62] text-[10px] italic">Mindful consistency on paper.</p>
+            <h2 className="text-lg font-serif text-[#413A2C]">{t('settings.app-name')}</h2>
+            <p className="text-[#726C62] text-[10px] italic">{t('settings.app-tagline')}</p>
           </div>
         </div>
 
         <div className="border-t border-[#DBDCD7] pt-6 space-y-3">
           <div className="flex justify-between items-center text-sm">
-            <span className="text-[#726C62] font-medium uppercase tracking-widest text-[9px]">Version</span>
+            <span className="text-[#726C62] font-medium uppercase tracking-widest text-[9px]">{t('settings.version')}</span>
             <span className="text-[#413A2C] font-mono text-xs">{import.meta.env.VITE_APP_VERSION}</span>
           </div>
           <div className="flex justify-between items-center text-sm">
-            <span className="text-[#726C62] font-medium uppercase tracking-widest text-[9px]">Repository</span>
+            <span className="text-[#726C62] font-medium uppercase tracking-widest text-[9px]">{t('settings.repository')}</span>
             <a
               href="https://github.com/heerheer/tracker"
               target="_blank"
@@ -173,7 +210,7 @@ const Settings: React.FC<SettingsProps> = ({ habits, onRefresh }) => {
         </div>
 
         <div className="pt-2 text-center">
-          <p className="text-[9px] text-[#726C62] uppercase tracking-[0.2em]">Waiting for the settling, the lingering, and the fading, until it is a regret no more.</p>
+          <p className="text-[9px] text-[#726C62] uppercase tracking-[0.2em]">{t('settings.quote-footer')}</p>
         </div>
       </div>
     </div>

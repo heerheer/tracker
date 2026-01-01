@@ -1,5 +1,7 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
+import { getSafeLanguage } from '@/utils/locale';
 
 interface WebDAVRestoreModalProps {
     show: boolean;
@@ -16,6 +18,8 @@ const WebDAVRestoreModal: React.FC<WebDAVRestoreModalProps> = ({
     onRestore,
     onDelete,
 }) => {
+    const { t, i18n } = useTranslation();
+
     const formatBackupInfo = (filename: string) => {
         const match = filename.match(/backup_(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})\.json/);
         if (!match) return { primary: filename, secondary: null };
@@ -31,12 +35,12 @@ const WebDAVRestoreModal: React.FC<WebDAVRestoreModalProps> = ({
             parseInt(ss)
         ));
 
-        const dateStr = dateObj.toLocaleDateString(undefined, {
+        const dateStr = dateObj.toLocaleDateString(getSafeLanguage(i18n.language), {
             month: 'short',
             day: 'numeric',
             year: 'numeric'
         });
-        const timeStr = dateObj.toLocaleTimeString(undefined, {
+        const timeStr = dateObj.toLocaleTimeString(getSafeLanguage(i18n.language), {
             hour: '2-digit',
             minute: '2-digit',
             second: '2-digit',
@@ -65,8 +69,8 @@ const WebDAVRestoreModal: React.FC<WebDAVRestoreModalProps> = ({
                         className="bg-[#FCFBFC] w-full max-w-sm rounded-[28px] p-8 space-y-6 paper-shadow border border-[#DBDCD7] flex flex-col max-h-[80vh]"
                     >
                         <div className="text-center space-y-2">
-                            <h2 className="text-2xl font-serif text-[#413A2C] italic">Pick a Backup</h2>
-                            <p className="text-sm text-[#726C62]">Select a snapshot to restore.</p>
+                            <h2 className="text-2xl font-serif text-[#413A2C] italic">{t('webdav.pick-backup')}</h2>
+                            <p className="text-sm text-[#726C62]">{t('webdav.select-snapshot')}</p>
                         </div>
 
                         <div className="flex-1 overflow-y-auto pr-2 custom-scrollbar space-y-3">
@@ -84,16 +88,16 @@ const WebDAVRestoreModal: React.FC<WebDAVRestoreModalProps> = ({
                                                 <div
                                                     onClick={(e) => {
                                                         e.stopPropagation();
-                                                        if (confirm(`Delete backup "${filename}"?`)) {
+                                                        if (confirm(t('webdav.delete-backup-confirm', { filename }))) {
                                                             onDelete(filename);
                                                         }
                                                     }}
                                                     className="p-1 hover:bg-red-50 rounded-lg text-red-400 opacity-0 group-hover:opacity-100 transition-all pointer-events-auto"
-                                                    title="Delete backup"
+                                                    title={t('webdav.delete')}
                                                 >
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 6h18" /><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" /><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" /><line x1="10" y1="11" x2="10" y2="17" /><line x1="14" y1="11" x2="14" y2="17" /></svg>
                                                 </div>
-                                                <span className="text-[10px] text-[#A3BB96] opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">Restore →</span>
+                                                <span className="text-[10px] text-[#A3BB96] opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">{t('webdav.restore-arrow')}</span>
                                             </div>
                                         </div>
                                         {info.secondary && (
@@ -108,7 +112,7 @@ const WebDAVRestoreModal: React.FC<WebDAVRestoreModalProps> = ({
                             onClick={onClose}
                             className="w-full text-[#726C62] font-semibold text-sm uppercase tracking-wider h-10 flex items-center justify-center hover:bg-[#E9E8E2]/30 rounded-xl transition-colors"
                         >
-                            Cancel
+                            {t('webdav.cancel')}
                         </button>
                     </motion.div>
                 </motion.div>

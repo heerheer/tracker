@@ -1,7 +1,9 @@
 
 import React, { useState } from 'react';
-import { HabitLog } from '../types';
+import { HabitLog } from '@/types';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
+import { getSafeLanguage } from '@/utils/locale';
 
 interface CalendarViewProps {
   logs: HabitLog[];
@@ -10,6 +12,7 @@ interface CalendarViewProps {
 }
 
 const CalendarView: React.FC<CalendarViewProps> = ({ logs, onToggle, onUpdateMood }) => {
+  const { t, i18n } = useTranslation();
   const todayStr = new Date().toISOString().split('T')[0];
   const [viewDate, setViewDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(todayStr);
@@ -33,7 +36,7 @@ const CalendarView: React.FC<CalendarViewProps> = ({ logs, onToggle, onUpdateMoo
   const prevMonth = () => setViewDate(new Date(year, month - 1));
   const nextMonth = () => setViewDate(new Date(year, month + 1));
 
-  const monthName = new Intl.DateTimeFormat('en-US', { month: 'long', year: 'numeric' }).format(viewDate);
+  const monthName = new Intl.DateTimeFormat(getSafeLanguage(i18n.language), { month: 'long', year: 'numeric' }).format(viewDate);
 
   const getIso = (day: number) => {
     return `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
@@ -58,7 +61,15 @@ const CalendarView: React.FC<CalendarViewProps> = ({ logs, onToggle, onUpdateMoo
         </div>
 
         <div className="grid grid-cols-7 gap-1">
-          {['M', 'T', 'W', 'T', 'F', 'S', 'S'].map((d, i) => (
+          {[
+            t('calendar.weekdays.mon'),
+            t('calendar.weekdays.tue'),
+            t('calendar.weekdays.wed'),
+            t('calendar.weekdays.thu'),
+            t('calendar.weekdays.fri'),
+            t('calendar.weekdays.sat'),
+            t('calendar.weekdays.sun')
+          ].map((d, i) => (
             <div key={i} className="text-[10px] text-center font-bold text-[#726C62] mb-1 opacity-50">{d}</div>
           ))}
           {days.map((day, i) => {
@@ -74,8 +85,8 @@ const CalendarView: React.FC<CalendarViewProps> = ({ logs, onToggle, onUpdateMoo
                 onClick={() => setSelectedDate(iso)}
                 className={`
                   aspect-square rounded-full flex flex-col items-center justify-center text-[11px] transition-all relative
-                  ${active 
-                    ? 'bg-[#66AB71] text-white' 
+                  ${active
+                    ? 'bg-[#66AB71] text-white'
                     : 'bg-transparent text-[#413A2C] hover:bg-[#E9E8E2]'}
                   ${isSelected ? 'ring-2 ring-[#413A2C] ring-offset-2 scale-110 z-10' : ''}
                   ${isToday && !active ? 'border border-[#66AB71] text-[#66AB71]' : ''}
@@ -99,10 +110,10 @@ const CalendarView: React.FC<CalendarViewProps> = ({ logs, onToggle, onUpdateMoo
         >
           <div className="flex justify-between items-center">
             <p className="text-[10px] uppercase tracking-widest font-bold text-[#726C62]">
-              {new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).format(new Date(selectedDate))}
+              {new Intl.DateTimeFormat(getSafeLanguage(i18n.language), { month: 'short', day: 'numeric', year: 'numeric' }).format(new Date(selectedDate))}
             </p>
             <span className={`text-[10px] uppercase font-bold px-2 py-0.5 rounded-full ${isChecked ? 'bg-[#66AB71]/10 text-[#66AB71]' : 'bg-[#726C62]/10 text-[#726C62]'}`}>
-              {isChecked ? 'Completed' : 'Skipped'}
+              {isChecked ? t('calendar.completed') : t('calendar.skipped')}
             </span>
           </div>
 
@@ -111,24 +122,24 @@ const CalendarView: React.FC<CalendarViewProps> = ({ logs, onToggle, onUpdateMoo
               <textarea
                 value={selectedLog?.mood || ''}
                 onChange={handleMoodChange}
-                placeholder="How was it?..."
+                placeholder={t('calendar.mood-placeholder')}
                 className="w-full bg-white/50 border-none rounded-xl px-4 py-3 text-sm text-[#413A2C] focus:ring-2 focus:ring-[#66AB71]/20 outline-none resize-none min-h-[80px]"
               />
               <button
                 onClick={() => onToggle(selectedDate)}
                 className="w-full py-2 bg-[#DBDCD7] text-[#726C62] text-xs font-bold uppercase tracking-widest rounded-xl hover:bg-red-50 hover:text-red-400 transition-colors"
               >
-                Clear Record
+                {t('calendar.clear-record')}
               </button>
             </div>
           ) : (
             <div className="py-2 text-center space-y-4">
-              <p className="text-xs text-[#726C62] italic">No entry for this day.</p>
+              <p className="text-xs text-[#726C62] italic">{t('calendar.no-entry')}</p>
               <button
                 onClick={() => onToggle(selectedDate, "")}
                 className="w-full py-3 bg-[#66AB71] text-white text-xs font-bold uppercase tracking-widest rounded-xl shadow-md shadow-[#66AB71]/10 hover:bg-[#549856] transition-all"
               >
-                Add Record
+                {t('calendar.add-record')}
               </button>
             </div>
           )}

@@ -9,8 +9,16 @@ i18n
     .use(initReactI18next)
     .init({
         fallbackLng: 'en',
+        detection: {
+            order: ['localStorage', 'navigator'],
+            lookupLocalStorage: 'tracker_user_lang',
+            caches: [],
+        },
         debug: import.meta.env.MODE === 'development',
         interpolation: {
             escapeValue: false,
+        },
+        backend: {
+            loadPath: '/locales/{{lng}}.json'
         }
     });

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Habit, TabType } from './types';
 import Home from './pages/Home';
@@ -7,6 +6,7 @@ import Settings from './pages/Settings';
 import Dock from './components/Dock';
 import { AnimatePresence, motion } from 'framer-motion';
 import { getAllHabits, saveAllHabits, deleteHabitFromDB } from './db';
+import { useTranslation } from 'react-i18next';
 
 const STORAGE_KEY = 'ethereal_habits_v1_moods';
 
@@ -34,6 +34,7 @@ const INITIAL_HABITS: Habit[] = [
 ];
 
 const App: React.FC = () => {
+  const { t } = useTranslation();
   const [habits, setHabits] = useState<Habit[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<TabType>('home');
@@ -142,7 +143,7 @@ const App: React.FC = () => {
       return (
         <div className="flex flex-col items-center justify-center h-full space-y-4 py-20">
           <div className="w-10 h-10 border-4 border-[#A3BB96] border-t-transparent rounded-full animate-spin" />
-          <p className="text-[#A3BB96] font-medium animate-pulse text-sm tracking-widest uppercase">Initializing Tracker</p>
+          <p className="text-[#A3BB96] font-medium animate-pulse text-sm tracking-widest uppercase">{t('app.initializing')}</p>
         </div>
       );
     }

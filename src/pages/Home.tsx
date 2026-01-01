@@ -5,7 +5,8 @@ import { motion, LayoutGroup, AnimatePresence } from 'framer-motion';
 import Heatmap from '@/components/widgets/Heatmap';
 import DailyQuote from '@/components/widgets/DailyQuote';
 import FutureCapsule from '@/components/widgets/FutureCapsule';
-import { isChinese } from '@/utils/locale';
+import { useTranslation } from 'react-i18next';
+import { getSafeLanguage } from '@/utils/locale';
 
 interface HomeProps {
   habits: Habit[];
@@ -15,6 +16,7 @@ interface HomeProps {
 const WIDGET_STORAGE_KEY = 'tracker_widget_config';
 
 const Home: React.FC<HomeProps> = ({ habits, onCheckIn }) => {
+  const { t, i18n } = useTranslation();
   const [widgetConfig, setWidgetConfig] = useState<WidgetConfig | null>(null);
   const [editingCapsule, setEditingCapsule] = useState(false);
 
@@ -92,10 +94,10 @@ const Home: React.FC<HomeProps> = ({ habits, onCheckIn }) => {
     <div className="space-y-4 md:space-y-12">
       <header className="space-y-1 px-1">
         <p className="text-xs uppercase tracking-widest text-[#726C62] font-medium">
-          {new Intl.DateTimeFormat(isChinese() ? 'zh-CN' : 'en-US', { weekday: 'long' }).format(new Date())}
+          {new Intl.DateTimeFormat(getSafeLanguage(i18n.language), { weekday: 'long' }).format(new Date())}
         </p>
         <h1 className="text-3xl font-serif italic text-[#413A2C]">
-          {new Intl.DateTimeFormat(isChinese() ? 'zh-CN' : 'en-US', { month: 'long', day: 'numeric' }).format(new Date())}
+          {new Intl.DateTimeFormat(getSafeLanguage(i18n.language), { month: 'long', day: 'numeric' }).format(new Date())}
         </h1>
       </header>
 
@@ -118,7 +120,7 @@ const Home: React.FC<HomeProps> = ({ habits, onCheckIn }) => {
               >
                 <div className="flex justify-between items-start">
                   <span className="text-4xl">{mainHabit.icon}</span>
-                  <span className="text-xs bg-[#E9E8E2] text-[#726C62] px-3 py-1 rounded-full uppercase tracking-wider font-bold">Main Focus</span>
+                  <span className="text-xs bg-[#E9E8E2] text-[#726C62] px-3 py-1 rounded-full uppercase tracking-wider font-bold">{t('home.main-focus')}</span>
                 </div>
 
                 <div className="space-y-1">
@@ -128,7 +130,7 @@ const Home: React.FC<HomeProps> = ({ habits, onCheckIn }) => {
 
                 <div className="flex items-baseline gap-2">
                   <span className="text-7xl font-serif text-[#413A2C]">{calculateStreak(mainHabit.logs)}</span>
-                  <span className="text-[#726C62] font-medium tracking-wide uppercase text-sm">Days Streak</span>
+                  <span className="text-[#726C62] font-medium tracking-wide uppercase text-sm">{t('home.days-streak')}</span>
                 </div>
 
                 <motion.button
@@ -142,7 +144,7 @@ const Home: React.FC<HomeProps> = ({ habits, onCheckIn }) => {
                       : 'bg-[#66AB71] text-white hover:bg-[#549856] shadow-lg shadow-[#66AB71]/20 active:scale-95'}
                   `}
                 >
-                  {isLoggedToday(mainHabit.logs) ? '✓ Completed for today' : 'Check In Now'}
+                  {isLoggedToday(mainHabit.logs) ? t('home.completed-for-today') : t('home.check-in-now')}
                 </motion.button>
               </motion.div>
             </section>
@@ -153,9 +155,9 @@ const Home: React.FC<HomeProps> = ({ habits, onCheckIn }) => {
                   🍃
                 </div>
                 <div className="space-y-2">
-                  <h2 className="text-xl font-serif text-[#413A2C] italic">No main focus yet</h2>
+                  <h2 className="text-xl font-serif text-[#413A2C] italic">{t("home.no-main-focus-yet")}</h2>
                   <p className="text-[#726C62] text-sm max-w-[200px] mx-auto">
-                    Select a primary habit in the records tab to track your main journey here.
+                    {t("home.select-primary-habit")}
                   </p>
                 </div>
               </div>
@@ -165,7 +167,7 @@ const Home: React.FC<HomeProps> = ({ habits, onCheckIn }) => {
       </LayoutGroup>
 
       <section className="space-y-4">
-        <h3 className="text-xs uppercase tracking-widest text-[#726C62] font-bold px-1">Other Journeys</h3>
+        <h3 className="text-xs uppercase tracking-widest text-[#726C62] font-bold px-1">{t("home.other-journeys")}</h3>
         <div className="grid gap-4">
           <AnimatePresence mode="popLayout">
             {secondaryHabits.length > 0 ? secondaryHabits.map((habit) => (
@@ -181,7 +183,7 @@ const Home: React.FC<HomeProps> = ({ habits, onCheckIn }) => {
                   <span className="text-2xl">{habit.icon}</span>
                   <div>
                     <h4 className="font-medium text-[#413A2C]">{habit.title}</h4>
-                    <p className="text-[10px] text-[#726C62] uppercase tracking-wider">{calculateStreak(habit.logs)} Day Streak</p>
+                    <p className="text-[10px] text-[#726C62] uppercase tracking-wider">{calculateStreak(habit.logs)} {t('home.day-streak')}</p>
                   </div>
                 </div>
                 <button
@@ -201,7 +203,7 @@ const Home: React.FC<HomeProps> = ({ habits, onCheckIn }) => {
                 layout
                 className="p-8 text-center border border-[#DBDCD7] rounded-2xl bg-[#FCFBFC]/30 italic text-[#726C62] text-sm"
               >
-                Your side journeys will appear here.
+                {t("home.no-secondary-journeys")}
               </motion.div>
             )}
           </AnimatePresence>
@@ -224,14 +226,14 @@ const Home: React.FC<HomeProps> = ({ habits, onCheckIn }) => {
               className="bg-[#FCFBFC] w-full max-w-sm rounded-[28px] p-8 space-y-6 paper-shadow border border-[#DBDCD7]"
             >
               <div className="text-center space-y-2">
-                <h2 className="text-2xl font-serif text-[#413A2C] italic">How are you feeling?</h2>
-                <p className="text-sm text-[#726C62]">Record a brief note for today's journey.</p>
+                <h2 className="text-2xl font-serif text-[#413A2C] italic">{t('home.how-are-you-feeling')}</h2>
+                <p className="text-sm text-[#726C62]">{t('home.record-brief-note')}</p>
               </div>
               <textarea
                 autoFocus
                 value={moodText}
                 onChange={e => setMoodText(e.target.value)}
-                placeholder="Today was..."
+                placeholder={t('home.mood-placeholder')}
                 className="w-full h-32 bg-[#E9E8E2]/50 border-none rounded-2xl px-4 py-3 focus:ring-2 focus:ring-[#66AB71]/20 outline-none text-[#413A2C] resize-none text-sm leading-relaxed"
               />
               <div className="flex gap-3">
@@ -239,13 +241,13 @@ const Home: React.FC<HomeProps> = ({ habits, onCheckIn }) => {
                   onClick={() => { setShowMoodModal(null); setMoodText(''); }}
                   className="flex-1 py-3 text-[#726C62] font-semibold text-sm uppercase tracking-wider"
                 >
-                  Skip
+                  {t('home.skip')}
                 </button>
                 <button
                   onClick={submitCheckIn}
                   className="flex-1 py-3 bg-[#66AB71] text-white rounded-xl font-semibold text-sm uppercase tracking-wider shadow-lg shadow-[#66AB71]/20"
                 >
-                  Check In
+                  {t('home.check-in')}
                 </button>
               </div>
             </motion.div>
@@ -295,13 +297,13 @@ const Home: React.FC<HomeProps> = ({ habits, onCheckIn }) => {
               className="bg-[#FCFBFC] w-full max-w-sm rounded-[28px] p-8 space-y-6 paper-shadow border border-[#DBDCD7]"
             >
               <div className="text-center space-y-2">
-                <h2 className="text-2xl font-serif text-[#413A2C] italic">Edit Capsule</h2>
-                <p className="text-sm text-[#726C62]">Update your manifestation target.</p>
+                <h2 className="text-2xl font-serif text-[#413A2C] italic">{t('home.edit-capsule')}</h2>
+                <p className="text-sm text-[#726C62]">{t('home.update-manifestation')}</p>
               </div>
 
               <div className="space-y-4">
                 <div className="space-y-1">
-                  <label className="text-[10px] uppercase tracking-widest text-[#726C62] font-medium ml-1">Title</label>
+                  <label className="text-[10px] uppercase tracking-widest text-[#726C62] font-medium ml-1">{t('home.title')}</label>
                   <input
                     type="text"
                     value={widgetConfig.capsule.title}
@@ -313,19 +315,19 @@ const Home: React.FC<HomeProps> = ({ habits, onCheckIn }) => {
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-[10px] uppercase tracking-widest text-[#726C62] font-medium ml-1">Objective</label>
+                  <label className="text-[10px] uppercase tracking-widest text-[#726C62] font-medium ml-1">{t('home.objective')}</label>
                   <textarea
                     value={widgetConfig.capsule.description || ''}
                     onChange={(e) => handleSaveWidgetConfig({
                       ...widgetConfig,
                       capsule: { ...widgetConfig.capsule, description: e.target.value }
                     })}
-                    placeholder="Brief description..."
+                    placeholder={t('home.objective-placeholder')}
                     className="w-full h-24 bg-[#E9E8E2]/50 border-none rounded-2xl px-4 py-3 focus:ring-2 focus:ring-[#66AB71]/20 outline-none text-[#413A2C] text-sm resize-none"
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-[10px] uppercase tracking-widest text-[#726C62] font-medium ml-1">Target Date</label>
+                  <label className="text-[10px] uppercase tracking-widest text-[#726C62] font-medium ml-1">{t('home.target-date')}</label>
                   <input
                     type="date"
                     value={widgetConfig.capsule.targetDate}
@@ -342,7 +344,7 @@ const Home: React.FC<HomeProps> = ({ habits, onCheckIn }) => {
                 onClick={() => setEditingCapsule(false)}
                 className="w-full py-4 bg-[#66AB71] text-white rounded-2xl font-semibold tracking-wide uppercase text-sm shadow-lg shadow-[#66AB71]/20 active:scale-95 transition-all"
               >
-                Done
+                {t('home.done')}
               </button>
             </motion.div>
           </motion.div>

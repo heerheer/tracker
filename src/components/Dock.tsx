@@ -1,6 +1,6 @@
-
 import React from 'react';
 import { TabType } from '../types';
+import { useTranslation } from 'react-i18next';
 
 interface DockProps {
   activeTab: TabType;
@@ -8,10 +8,11 @@ interface DockProps {
 }
 
 const Dock: React.FC<DockProps> = ({ activeTab, setActiveTab }) => {
+  const { t } = useTranslation();
   const tabs: { id: TabType; label: string; icon: string }[] = [
-    { id: 'home', label: 'Home', icon: '✦' },
-    { id: 'records', label: 'Records', icon: '▤' },
-    { id: 'settings', label: 'About', icon: '⚙' },
+    { id: 'home', label: t('nav.home'), icon: '✦' },
+    { id: 'records', label: t('nav.records'), icon: '▤' },
+    { id: 'settings', label: t('nav.settings'), icon: '⚙' },
   ];
 
   return (
@@ -24,8 +25,8 @@ const Dock: React.FC<DockProps> = ({ activeTab, setActiveTab }) => {
             title={tab.label}
             className={`
               relative w-12 h-12 flex items-center justify-center rounded-full transition-all duration-500 ease-out
-              ${activeTab === tab.id 
-                ? 'bg-[#66AB71] text-white shadow-lg shadow-[#66AB71]/30 scale-110' 
+              ${activeTab === tab.id
+                ? 'bg-[#66AB71] text-white shadow-lg shadow-[#66AB71]/30 scale-110'
                 : 'text-[#726C62] hover:bg-[#E9E8E2] hover:text-[#413A2C]'}
             `}
           >
