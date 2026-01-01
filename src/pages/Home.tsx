@@ -1,10 +1,11 @@
 
 import React, { useState, useEffect } from 'react';
-import { Habit, WidgetConfig } from '../types';
+import { Habit, WidgetConfig } from '@/types';
 import { motion, LayoutGroup, AnimatePresence } from 'framer-motion';
-import Heatmap from '../components/widgets/Heatmap';
-import DailyQuote from '../components/widgets/DailyQuote';
-import FutureCapsule from '../components/widgets/FutureCapsule';
+import Heatmap from '@/components/widgets/Heatmap';
+import DailyQuote from '@/components/widgets/DailyQuote';
+import FutureCapsule from '@/components/widgets/FutureCapsule';
+import { isChinese } from '@/utils/locale';
 
 interface HomeProps {
   habits: Habit[];
@@ -91,10 +92,10 @@ const Home: React.FC<HomeProps> = ({ habits, onCheckIn }) => {
     <div className="space-y-4 md:space-y-12">
       <header className="space-y-1 px-1">
         <p className="text-xs uppercase tracking-widest text-[#726C62] font-medium">
-          {new Intl.DateTimeFormat('en-US', { weekday: 'long' }).format(new Date())}
+          {new Intl.DateTimeFormat(isChinese() ? 'zh-CN' : 'en-US', { weekday: 'long' }).format(new Date())}
         </p>
         <h1 className="text-3xl font-serif italic text-[#413A2C]">
-          {new Intl.DateTimeFormat('en-US', { month: 'long', day: 'numeric' }).format(new Date())}
+          {new Intl.DateTimeFormat(isChinese() ? 'zh-CN' : 'en-US', { month: 'long', day: 'numeric' }).format(new Date())}
         </h1>
       </header>
 

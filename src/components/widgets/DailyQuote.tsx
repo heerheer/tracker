@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { isChinese } from '@/utils/locale';
 
 interface Quote {
     content: string;
     author: string;
 }
 
-const isChinese = () => {
-    const lang = navigator.language;
-    return lang.toLowerCase().startsWith('zh');
-};
 
 const DailyQuote: React.FC = () => {
     const [quote, setQuote] = useState<Quote | null>(null);
