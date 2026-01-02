@@ -31,11 +31,11 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
+          cache: 'pnpm'
 
       # 4. 安装依赖
       - name: Install Dependencies
-        run: npm install
+        run: pnpm install
 
       # 5. 安装 Android SDK
       - name: Setup Android SDK
