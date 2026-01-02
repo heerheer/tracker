@@ -32,15 +32,14 @@ jobs:
         env:
           VITE_APP_VERSION: ${{ github.ref_name }}
 
-      - name: Build Android APK
-        uses: Narottam04/action-capacitor-android@master
-        with:
-          # The action defaults to 'npm run build', but we already built it.
-          # We can skip the build in the action if possible, but the action seems to run it anyway.
-          # Let's ensure 'android' platform is added if not present.
-          # Note: capacitor-android-action handles 'npx cap add android' if it's missing or runs sync.
-          confirm-android: true
-          # We pass the version as well if needed by the app, though Vite already injected it.
+      - name: Setup environment
+        uses: coturiv/setup-ionic@v2
+
+      - name: Build Android
+        run: |
+          npx cap sync android
+          cd android
+          ./gradlew assembleDebug
 
       - name: Create Release and Upload Assets
         uses: softprops/action-gh-release@v2
