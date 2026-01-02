@@ -11,6 +11,7 @@
   "dependencies": {
     "@capacitor-community/app-icon": "^7.0.0",
     "@capacitor/android": "^7.0.0",
+    "@capacitor/assets": "^3.0.5",
     "@capacitor/core": "^7.0.0",
     "@radix-ui/react-switch": "^1.2.6",
     "@tailwindcss/vite": "^4.1.18",
@@ -26,6 +27,7 @@
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "react-i18next": "^16.5.1",
+    "sharp": "^0.34.5",
     "tailwind-merge": "^3.4.0",
     "tailwindcss": "^4.1.18"
   },
