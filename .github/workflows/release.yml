@@ -73,15 +73,16 @@ jobs:
 
 
       #  对 APK 进行签名
-      - name: Sign APK
-        uses: r0adkll/sign-android-release@v1
+      - uses: ilharp/sign-android-release@v2 # Or use @nightly
+        name: Sign app APK
         id: sign_app
         with:
-          releaseDirectory: android/app/build/outputs/apk/release
-          signingKeyBase64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
-          alias: ${{ secrets.ANDROID_KEY_ALIAS }}
+          releaseDir: app/build/outputs/apk/release
+          signingKey: ${{ secrets.ANDROID_SIGNING_KEY }}
+          keyAlias: ${{ secrets.ANDROID_KEY_ALIAS }}
           keyStorePassword: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
           keyPassword: ${{ secrets.ANDROID_KEY_PASSWORD }}
+          buildToolsVersion: 36.0.0
 
       - name: Create Release and Upload Assets
         uses: softprops/action-gh-release@v2
