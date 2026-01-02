@@ -18,6 +18,14 @@ jobs:
     name: Build and Release
     runs-on: ubuntu-latest
     steps:
+
+      # 0. 解析版本
+      - name: Resolve version
+        run: |
+          VERSION="${{ github.ref_name }}"
+          VERSION="${VERSION#v}"
+          echo "APP_VERSION=$VERSION" >> $GITHUB_ENV
+
       # 1. 拉取代码
       - name: Checkout Source
         uses: actions/checkout@v4
@@ -28,8 +36,6 @@ jobs:
         with:
           java-version: '21'
           distribution: 'zulu'
-          
-
 
       # 3. 设置 PNPM/NODE 环境
       - name: Install pnpm
@@ -54,7 +60,7 @@ jobs:
       - name: Build web app
         run: pnpm build
         env:
-          VITE_APP_VERSION: ${{ github.ref_name }}
+          VITE_APP_VERSION: ${{ github.ref_name }} # 这边需要带v前缀
 
       # 7. 添加 Android 平台
       - name: Add Android platform
@@ -65,7 +71,17 @@ jobs:
 
       # 8. 同步 Capacitor
       - name: Capacitor Sync
-        run: npx cap sync android
+        run: |
+          npx cap sync android
+          npx @capacitor/assets generate --iconBackgroundColor '#eeeeee' --iconBackgroundColorDark '#222222' --splashBackgroundColor '#eeeeee' --splashBackgroundColorDark '#111111' --android
+
+      # 8.2 Bump version
+      - name: Bump version
+        uses: Devofure/advance-android-version-actions@v1.4
+        with:
+          versionCode: ${{github.run_number}}
+          gradlePath: android/app/build.gradle # or app/build.gradle.kts 
+          versionName: ${{ env.APP_VERSION }} # 这边可以不带v
 
       # 9. 构建 Android
       - name: Build Android
