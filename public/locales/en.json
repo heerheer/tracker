@@ -71,9 +71,8 @@
         "journey-title-placeholder": "e.g. Daily Meditation",
         "new-journey": "New Journey",
         "set-main": "Set Main",
-        "swipe-hint-text": "💡Try swiping habit cards — left to delete, right to set as main goal.",
+        "swipe-hint-text": "💡 Try swiping habit cards — left to delete or set as main goal.",
         "swipe-left": "Swipe left",
-        "swipe-right": "Swipe right to set main",
         "title": "Records",
         "total-check-ins": "Total Check-ins"
     },
@@ -136,7 +135,9 @@
         "server-url": "Server URL",
         "title": "WebDAV Backup",
         "use-cors-proxy": "Use CORS Proxy",
-        "username": "Username"
+        "username": "Username",
+        "cancel": "Cancel",
+        "confirm": "Confirm"
     },
     "widgets": {
         "days": "Days",

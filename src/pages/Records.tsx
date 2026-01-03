@@ -51,6 +51,13 @@ const Records: React.FC<RecordsProps> = ({ habits, onDelete, onSetMain, onAdd, o
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [selectedHabitId, setSelectedHabitId] = useState<string | null>(null);
   const [habitToDelete, setHabitToDelete] = useState<Habit | null>(null);
+  const [swipedHabitId, setSwipedHabitId] = useState<string | null>(null);
+
+  React.useEffect(() => {
+    const handleGlobalClick = () => setSwipedHabitId(null);
+    window.addEventListener('click', handleGlobalClick);
+    return () => window.removeEventListener('click', handleGlobalClick);
+  }, []);
 
   const [newTitle, setNewTitle] = useState('');
   const [newDesc, setNewDesc] = useState('');
@@ -93,13 +100,29 @@ const Records: React.FC<RecordsProps> = ({ habits, onDelete, onSetMain, onAdd, o
           {habits.map((habit) => (
             <div key={habit.id} className="relative overflow-hidden rounded-[24px]">
               {/* Swipe Action Layer (Underlay) */}
-              <div className="absolute inset-0 bg-red-500/10 flex justify-end items-center pr-1 translate-x-1">
-                <div className="flex items-center h-full px-4">
+              <div className="absolute inset-0 bg-secondary/10 flex justify-end items-center pr-4">
+                <div className="flex items-center gap-3">
+                  {!habit.isMain && (
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onSetMain(habit.id);
+                        setSwipedHabitId(null);
+                      }}
+                      className="bg-primary/90 text-primary-foreground px-5 py-3 rounded-2xl flex items-center gap-2 font-bold shadow-lg shadow-primary/20 active:scale-95 transition-all text-[10px] uppercase tracking-wider"
+                    >
+                      {t('records.set-main')}
+                    </button>
+                  )}
                   <button
-                    onClick={(e) => { e.stopPropagation(); setHabitToDelete(habit); }}
-                    className="bg-destructive text-white px-6 py-3 rounded-2xl flex items-center gap-2 font-bold shadow-lg shadow-red-500/20 active:scale-95 transition-transform"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setHabitToDelete(habit);
+                      setSwipedHabitId(null);
+                    }}
+                    className="bg-destructive/90 text-white px-5 py-3 rounded-2xl flex items-center gap-2 font-bold shadow-lg shadow-red-500/20 active:scale-95 transition-all text-[10px] uppercase tracking-wider"
                   >
-                    <span className="text-xs uppercase tracking-wider">{t('records.delete')}</span>
+                    {t('records.delete')}
                   </button>
                 </div>
               </div>
@@ -108,13 +131,35 @@ const Records: React.FC<RecordsProps> = ({ habits, onDelete, onSetMain, onAdd, o
               <motion.div
                 layout
                 drag="x"
-                dragConstraints={{ left: -120, right: 0 }}
+                dragConstraints={{ left: -220, right: 0 }}
                 dragElastic={0.05}
-                dragSnapToOrigin={false}
+                onDragStart={() => {
+                  if (swipedHabitId && swipedHabitId !== habit.id) {
+                    setSwipedHabitId(null);
+                  }
+                }}
+                onDragEnd={(_, info) => {
+                  if (info.offset.x < -40) {
+                    setSwipedHabitId(habit.id);
+                  } else {
+                    setSwipedHabitId(null);
+                  }
+                }}
                 initial={{ opacity: 0, scale: 0.98 }}
-                animate={{ opacity: 1, scale: 1 }}
+                animate={{
+                  opacity: 1,
+                  scale: 1,
+                  x: swipedHabitId === habit.id ? (habit.isMain ? -100 : -210) : 0
+                }}
                 exit={{ opacity: 0, scale: 0.98 }}
-                onClick={() => setSelectedHabitId(habit.id)}
+                onClick={(e) => {
+                  if (swipedHabitId) {
+                    setSwipedHabitId(null);
+                    e.stopPropagation();
+                  } else {
+                    setSelectedHabitId(habit.id);
+                  }
+                }}
                 className={`
                   relative z-10 bg-card border border-border rounded-[24px] p-6 space-y-4 paper-shadow 
                   cursor-pointer transition-colors hover:border-primary group
